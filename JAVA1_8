@@ -1,0 +1,209 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class JAVA1_8 {
+
+// 	Lambda Expressions: Shorthand for creating instances of functional interfaces. We use it to iterate and print a list of names.
+// Stream API: Functional programming for collections, demonstrated by filtering a list of names that start with 'S'.
+// Method References: Refers to an existing method. Used here to print each name in the list.
+// Constructor References: Refers to a constructor to create objects. A Person object is created without explicitly calling the constructor.
+// Default Methods in Interfaces: Allows interfaces to have method implementations. Demonstrated by calling the print method in Vehicle.
+// Static Methods in Interfaces: Demonstrated by calling the static service method directly from the Vehicle interface.
+// Optional Class: Helps in avoiding NullPointerException. We demonstrate it with an optional value check and default value handling.
+// Date-Time API: Shows how to work with LocalDate, LocalTime, and LocalDateTime.
+// forEach Method: Used to iterate over a collection using a lambda expression and a method reference.
+
+	// 1. Lambda Expression Example
+	private static void lambdaExpressionExample() {
+		System.out.println("Lambda Expression Example:");
+		List<String> names = Arrays.asList("Vinod", "Sujit", "Abhishek");
+
+		// Using Lambda expression to print each name
+		names.forEach(name -> System.out.println(name));
+
+		// names.forEach(System.out::println);
+	}
+
+	// 2. Stream API Example
+	private static void streamAPIExample() {
+		System.out.println("\nStream API Example:");
+		List<String> names = Arrays.asList("Vinod", "Sujit", "Abhishek", "Siddharth", "Siddharth", "Vinod");
+		List<Integer> num = Arrays.asList(1, 4, 7, 10);
+
+		Integer minNum = num.stream().min(Integer::compare).get();
+
+		Integer maxNum = num.stream().max(Integer::compare).get();
+
+		System.out.println("Min:-" + minNum);
+
+		System.out.println("Max:-" + maxNum);
+
+		System.out.println("\n");
+
+		// Using Stream to filter names starting with 'S'
+		List<String> filteredNames = names.stream().filter(name -> name.startsWith("S")).collect(Collectors.toList());
+
+		filteredNames.forEach(System.out::println);
+
+		System.out.println("\n distinct:-");
+
+		Stream<String> distinct = names.stream().distinct();
+
+		distinct.forEach(System.out::println);
+
+		System.out.println("\n Compare two list object :-");
+
+		List<Integer> numbers1 = Arrays.asList(10, 15, 20, 25, 30);
+
+		List<Integer> numbers2 = Arrays.asList(10, 15, 20, 35, 30);
+
+		List<Integer> compare = numbers1.stream().filter(numbers2::contains).collect(Collectors.toList());
+
+		compare.forEach(System.out::println);
+
+		System.out.println("\n find count of num :-");
+
+		List<Integer> listNum = Arrays.asList(5, 5, 5, 5, 2, 2, 3, 3, 4, 4, 1, 1, 22, 3, 4, 5, 7, 5, 4, 5, 4, 4, 5, 6,
+				4, 3, 3, 4, 5, 7, 8, 8, 5, 4, 3, 5);
+
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+
+		listNum.stream().forEach(i -> {
+			if (map.containsKey(i)) {
+				Integer integer = map.get(i);
+				integer++;
+				map.put(i, integer);
+			} else {
+				map.put(i, 1);
+			}
+
+		});
+
+		listNum.forEach(i -> map.compute(i, (key, value) -> (value == null) ? 1 : value + 1));
+
+		System.out.println(map);
+
+	}
+
+	// 3. Method Reference Example
+	private static void methodReferenceExample() {
+		System.out.println("\nMethod Reference Example:");
+		List<String> names = Arrays.asList("Vinod", "Sujit", "Abhishek");
+
+		// Using method reference to print names
+		names.forEach(System.out::println);
+	}
+
+	// 4. Constructor Reference Example
+	private static void constructorReferenceExample() {
+		System.out.println("\nConstructor Reference Example:");
+		Supplier<Person> personSupplier = Person::new; // Constructor Reference
+		Person person = personSupplier.get();
+		System.out.println("Person created: " + person.name);
+	}
+
+	// 5. Default Method in Interface Example
+	private static void defaultMethodExample() {
+		System.out.println("\nDefault Method Example:");
+		Vehicle car = new Car();
+		car.print();
+	}
+
+	// 6. Static Method in Interface Example
+	private static void staticMethodExample() {
+		System.out.println("\nStatic Method in Interface Example:");
+		Vehicle.service(); // Calling static method from Vehicle interface
+	}
+
+	// 7. Optional Class Example
+	private static void optionalClassExample() {
+		System.out.println("\nOptional Class Example:");
+		String[] names = new String[10];
+		names[0] = "Vinod";
+
+		// Create an Optional object
+		Optional<String> optionalName = Optional.ofNullable(names[0]);
+
+		// Check if the value is present
+		optionalName.ifPresent(System.out::println);
+
+		// Provide a default value if name is not present
+		System.out.println(optionalName.orElse("Default Name"));
+	}
+
+	// 8. Date-Time API Example
+	private static void dateTimeAPIExample() {
+		System.out.println("\nDate-Time API Example:");
+		// Current date
+		LocalDate date = LocalDate.now();
+		System.out.println("Current Date: " + date);
+
+		// Current time
+		LocalTime time = LocalTime.now();
+		System.out.println("Current Time: " + time);
+
+		// Current date and time
+		LocalDateTime dateTime = LocalDateTime.now();
+		System.out.println("Current DateTime: " + dateTime);
+
+		// Custom date
+		LocalDate customDate = LocalDate.of(2024, 9, 4);
+		System.out.println("Custom Date: " + customDate);
+	}
+
+	// 9. ForEach Method Example (Part of Iterable interface)
+	private static void forEachExample() {
+		System.out.println("\nForEach Method Example:");
+		List<String> names = Arrays.asList("Vinod", "Sujit", "Abhishek");
+
+		// Using forEach method to print each name
+		names.forEach(System.out::println);
+	}
+
+	public static void main(String[] args) {
+		// Step-by-step execution of all Java 8 features
+		lambdaExpressionExample();
+		streamAPIExample();
+		methodReferenceExample();
+		constructorReferenceExample();
+		defaultMethodExample();
+		staticMethodExample();
+		optionalClassExample();
+		dateTimeAPIExample();
+		forEachExample();
+	}
+}
+
+// Supporting classes for Constructor Reference, Default/Static Method in Interface
+
+class Person {
+	String name;
+
+	Person() {
+		this.name = "Default Name"; // Constructor assigns a default name
+	}
+}
+
+interface Vehicle {
+	// Default method in interface
+	default void print() {
+		System.out.println("This is a vehicle");
+	}
+
+	// Static method in interface
+	static void service() {
+		System.out.println("Vehicle needs service");
+	}
+}
+
+class Car implements Vehicle {
+	// Car inherits default method from Vehicle interface
+}
